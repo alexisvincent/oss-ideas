@@ -13,13 +13,15 @@ The idea would be to define a similar API to gulp, with something akin to gulp/v
 ### SystemJS Config Generator to allow loading of node_modules
 Now that yarn provides deterministic installs, we can leverage this to generate config files for SystemJS (providing an alternative to JSPM). JSPM is an amazing project, but I feel this project could provide a better **onboarding** process then asking developers to introduce a new package manager.
 
-## General purpose pluginable [package manager / build tool / bundler] for the Javascript ecosystem
+### General purpose pluginable [package manager / build tool / bundler] for the Javascript ecosystem
 Similar to Leiningen for Clojure, that would provide mechanisms to:
 - initialize a project
 - add dependencies
 - provide a repl
 - build your code
 - handle development experience in the browser (ie. hot-reloading, syntax errors, etc.) [similar to lein-figwheel]
+
+Perhaps Yarn JS will fill this gap?
 
 ## IDE Tools
 
