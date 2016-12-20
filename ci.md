@@ -15,15 +15,18 @@ My thoughts on an ideal CI build System.
 - Tasks are containers
 - Programatic API
 - Fast
+- Stateless
 
 ## Core Concepts
 
 ### Tasks
 Tasks are containers (consider a task being a set of containers with a 'primary' container) and the smallest unit of work, they represent some thing that needs to be done. They can also be thought of as functions.
 
-Tasks yield a directory (its output). Tasks can also specify dependencies on other tasks (function input), the 'output' directories of these dependencies will be mounted in to the container.
+Tasks yield a directory (its output) of files. Tasks can also specify dependencies on other tasks (function input), the 'output' directories of these dependencies will be mounted in to the container.
 
-Task outputs are immutable, if multiple tasks depend on a single task they will each get their own copy of the data. Task outputs are also traceable, you can examine the output of a task at any point in the build process.
+Tasks can also affect the outside world (eg. deploy to production or send a notification).
+
+Task outputs are immutable, if multiple tasks depend on a single task they will each get their own copy of the data. Task outputs are also traceable, you can examine the output of a task at any point in the build process. Thus you can examine exactly the output of each task and more easily determine where errors are.
 
 Task outputs are stored as layers. So in the case that task A yields a git repo, and task B downloads dependencies to the repo (task B is effectively a transform of the task A output), the output of task B will be stored as a layer on top of the git repo. This makes storing intermediary assets cheap.
 
@@ -45,11 +48,14 @@ Given any build, the system will try reuse as much of the cached tasks as they c
 
 Tasks can be packaged and shared via a package manager.
 
+
 #### Sources
 A source is a task that can trigger a build, sources can't have dependencies. Sources are things like 'git repos', 'time passing', 'notifications' etc. Essentially event emmiters.
 
 ### Stages
 A stage is a set of tasks and is meant to help catagorize and control order of execution. Stages also specify dependencies as DAG's. Tasks in a stage will only run if all tasks in any dependency stages has completed.
+
+A 'pipeline' of tasks is thus created and you should be able to inspect it fully. If the pipeline fails at any task, you should be able to rerun it and keep 'good' tasks, just using the cached results.
 
 ## Schedulers
 The core concepts are a high level abstraction over how to run tasks. And don't dictate the environment that they run on. 
@@ -57,4 +63,15 @@ The core concepts are a high level abstraction over how to run tasks. And don't 
 Schedulers are (sharable) plugins that control how tasks are executed and how their dependencies and outputs are distributes. 
 
 For example you could have a 'local' scheduler, which just talks to a docker engine and runs the containers locally and handles volume management by copying directories.
-Where as a 'kubernetes' scheduler could hand off task scheduling to the kubernetes native scheduler and run tasks as containers in pods, with a helper container that manages the volumes and distributing the output and inputs around the cluster.
+Where as a 'kubernetes' scheduler could hand off task scheduling to the kubernetes native scheduler and run tasks as containers in pods, with a helper container that manages the volumes and distributing the output and input layers around the cluster.
+
+## API Server, UI and CLI
+There should be a 'master' process that provides an HTTP API. Thus a UI and CLI, as well as programatic processes, can interact with the system. 
+
+The CLI should be able to kick off individual tasks locally or on a cluster.
+
+**Dashboard** - This is a must have, need some nice visualization that can be displayed on a screen of the build process.
+
+It wont be hard to provide a programatic UI to design your pipeline, which can then just spit out a config file. The UI can also take as input a config and allow you to modify it.
+
+Should also be easy to statically analize the system and provide insight into how the pipeline can be optimized.
