@@ -8,7 +8,7 @@ My thoughts on an ideal CI build System.
 - Interface based design
 - Deterministic
 - Functional in nature
-- Automatic parallelization from specifying tasks and dependencies to form a DAG (Directed Asyclic Graph), <- fancy name for a rooted tree as far as I can see
+- Automatic parallelization from specifying tasks and dependencies to form a DAG (Directed Asyclic Graph)
 - tasks as functions on immutable directories (can be layered using a file system like Overlay or AUFS)
 - Kick ass UI
 - Form tasks into stages
@@ -20,7 +20,7 @@ My thoughts on an ideal CI build System.
 ## Core Concepts
 
 ### Tasks
-Tasks are containers (consider a task being a set of containers with a 'primary' container) and the smallest unit of work, they represent some thing that needs to be done. They can also be thought of as functions.
+A tasks is a set of containers, containing a primary container, and the smallest unit of work, they represent some thing that needs to be done. They can also be thought of as functions.
 
 Tasks yield a directory (its output) of files. Tasks can also specify dependencies on other tasks (function input), the 'output' directories of these dependencies will be mounted in to the container.
 
