@@ -40,9 +40,7 @@ Tasks can also modify a global 'context' that will be passed down to all decenda
 
 If a task has run previously, it's input and output (from the previous) run, will be mounted in to the container (easy, powerful caching).
 
-Tasks can be marked as 'pure', pure tasks can be memoized (cached) for the same set of inputs (code transforms for instance), meaning they won't be rerun. Tasks can be marked as semi-pure and given a timeout, such tasks will be cached until the timeout expires given the same input (downloading dependencies of a repo).
-
-Tasks can 'inform' the system at runtime if they are 'pure' or not at runtime, this allows tasks to run programatic tests to check they will provide the same result as the last time.
+Tasks can be marked as 'pure', pure tasks can be memoized (cached) for the same set of inputs (code transforms for instance), meaning they won't be rerun.
 
 Given any build, the system will try reuse as much of the cached tasks as they can.
 
