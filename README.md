@@ -27,6 +27,4 @@ Perhaps Yarn JS will fill this gap?
 ## IDE Tools
 
 ### General purpose code analysis / transform system (or even protocol)
-A general purpose 'IDE engine' that runs as a daemon, exposing a remote API (tcp socket, unix socket) allowing for code analysis, intelli-sense, syntax highlighting, etc. This would allow IDE/editor vendor's to collaborate on IDE tooling, and for IDE's and editors to focus on the rest of the developer facing interface.
-
-Then (editors/IDE)'s like, VIM, emacs, netbeans, atom, VS Studio could provide the frontend and hook into the analysis provided by this tool or set of protocols.
+This one happens to exist here https://github.com/Microsoft/language-server-protocol.
